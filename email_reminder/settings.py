@@ -80,12 +80,15 @@ WSGI_APPLICATION = 'email_reminder.wsgi.application'
 #         'NAME': BASE_DIR / 'db.sqlite3',
 #     }
 # }
+
+from decouple import config
+
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.mysql",
         "NAME": "email_reminder",
         "USER": "root",
-        "PASSWORD": "manika_singh220@2005",
+        "PASSWORD": config('PASSWORD'),
         "HOST": "127.0.0.1",
         "PORT": "3306",
     }
@@ -133,7 +136,6 @@ STATICFILES_DIRS = [BASE_DIR / "static"]
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-from decouple import config
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = config('EMAIL_HOST')
