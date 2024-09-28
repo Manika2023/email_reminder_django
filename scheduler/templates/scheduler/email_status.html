@@ -1,0 +1,95 @@
+<!-- email_status.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Email Status</title>
+    <link href="{% static 'scheduler/output.css' %}" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100">
+
+    <div class="container mx-auto my-8">
+        <h1 class="text-3xl font-bold text-center text-blue-600 mb-6">Email Reminder Status</h1>
+
+        <!-- Messages Section -->
+        <div class="container mx-auto mb-4">
+            {% if messages %}
+                <div class="mb-4">
+                    {% for message in messages %}
+                        <div class="bg-green-500 border border-green-400 text-white px-4 py-3 rounded relative" role="alert">
+                            <span class="block sm:inline">{{ message }}</span>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+
+        <div class="bg-white shadow-md rounded-lg">
+            <div class="overflow-x-auto">
+                <table class="min-w-full">
+                    <thead class="bg-gray-200">
+                        <tr>
+                            <th class="py-3 px-4 text-left text-sm font-medium text-gray-600">Recipient Email</th>
+                            <th class="py-3 px-4 text-left text-sm font-medium text-gray-600">Message</th>
+                            <th class="py-3 px-4 text-left text-sm font-medium text-gray-600">Scheduled Time</th>
+                            <th class="py-3 px-4 text-left text-sm font-medium text-gray-600">Sent Status</th>
+                            <th class="py-3 px-4 text-left text-sm font-medium text-gray-600">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-gray-700">
+                        {% for schedule in schedules %}
+                            <tr class="border-b hover:bg-gray-100">
+                                <td class="py-3 px-4">{{ schedule.reminder.recipient_email }}</td>
+                                <td class="py-3 px-4">{{ schedule.reminder.message }}</td>
+                                <td class="py-3 px-4">{{ schedule.reminder.scheduled_time|date:"F j, Y, g:i a" }}</td>
+                                <td class="py-3 px-4">
+                                    {% if schedule.reminder.scheduled_time < now %}
+                                        {% if schedule.is_sent %}
+                                            <span class="inline-block bg-green-800 text-white text-xs font-semibold px-6 py-1 rounded">Sent</span>
+                                        {% else %}
+                                            <span class="inline-block bg-red-800 text-white text-xs font-semibold px-2 py-1 rounded">Not Sent</span>
+                                        {% endif %}
+                                    {% else %}
+                                        <span class="inline-block bg-yellow-500 text-white text-xs font-semibold px-2 py-1 rounded">Pending</span>
+                                    {% endif %}
+                                </td>
+                                <td class="py-3 px-4">
+                                    {% if schedule.reminder.scheduled_time > now %}
+                                        <!-- Show Update button for pending reminders -->
+                                        <a href="{% url 'update_reminder' schedule.reminder.id %}" class="bg-yellow-500 text-white font-semibold py-1 px-3 rounded hover:bg-yellow-600 transition duration-300 text-xs">
+                                            Update
+                                        </a>
+                                    {% endif %}
+                                    
+                                    <!-- Show Delete button for all reminders -->
+                                    <a href="{% url 'delete_reminder' schedule.reminder.id %}" class="bg-red-500 text-white font-semibold py-1 px-3 rounded hover:bg-red-600 transition duration-300 text-xs ml-2">
+                                        Delete
+                                    </a>
+
+                                    <!-- Show Cancel button for all reminders -->
+                                    {% if schedule.reminder.scheduled_time > now %}
+                                        <a href="{% url 'cancel_email_task' schedule.id %}" class="bg-gray-500 text-white font-semibold py-1 px-3 rounded hover:bg-gray-600 transition duration-300 text-xs ml-2">
+                                            Cancel Mail
+                                        </a>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        {% empty %}
+                            <tr>
+                                <td colspan="5" class="text-center text-gray-500 py-4">No scheduled emails found.</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <div class="text-center my-4">
+                <a href="{% url 'email_reminder' %}" class="bg-blue-500 text-white font-semibold py-2 px-4 rounded hover:bg-blue-600 transition duration-300">Schedule More Reminders</a>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

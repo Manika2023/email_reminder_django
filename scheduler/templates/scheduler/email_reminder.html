@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="{% static 'scheduler/output.css' %}" rel="stylesheet">
+    <title>Set Email Reminders</title>
+    <style>
+        body {
+            background-image: url("{% static 'scheduler/image/timer.avif' %}");
+            background-size: cover;
+            background-position: center;
+            color: #333;
+        }
+    </style>
+
+</head>
+
+<body class="bg-gray-100 flex items-center justify-center h-screen">
+
+    <div class="bg-white rounded-lg shadow-md p-8 w-96">
+        <div class="mb-6">
+            <h1 class="text-2xl font-bold text-center">Set Email Reminders</h1>
+        </div>
+        <form method="POST">
+            {% csrf_token %}
+            {{ formset.management_form }}
+            {% for form in formset %}
+                <div class="mb-4">
+                    <div>
+                        {{ form.recipient_email.label }}:<br>
+                        {{ form.recipient_email }}<br>
+                    </div>
+                    <div class="mt-4">
+                        {{ form.message.label }}:<br>
+                        {{ form.message }}<br>
+                    </div>
+                    <div class="mt-4">
+                        {{ form.scheduled_time.label }}:<br>
+                        {{ form.scheduled_time }}<br>
+                    </div>
+                </div>
+            {% endfor %}
+            <div>
+                <button type="submit" class="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 rounded">
+                    Set Reminder
+                </button>
+            </div>
+            <div class="mt-4">
+                <a href="{% url 'email_status' %}" class="w-full bg-blue-500 text-white font-semibold py-2 px-4 rounded hover:bg-blue-600">Check Status</a>
+            </div> 
+        </form>
+    </div>
+</body>
+</html>

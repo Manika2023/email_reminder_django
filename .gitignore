@@ -1,0 +1,13 @@
+# Ignore the .env file
+.env
+
+# Ignore other sensitive files or system files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.DS_Store
+.vscode/
+.idea/
+.mypy_cache/
+.pytest_cache/

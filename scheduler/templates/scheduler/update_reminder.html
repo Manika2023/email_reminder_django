@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+     {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Update Reminder</title>
+    <link href="{% static 'scheduler/output.css' %}" rel="stylesheet">
+</head>
+<body class="bg-gray-100 text-gray-800">
+
+    <div class="container mx-auto p-6 max-w-lg">
+        <h1 class="text-3xl font-bold mb-6 text-center">Update Email Reminder</h1>
+
+        <form method="POST" class="bg-white p-6 rounded-lg shadow-md">
+            {% csrf_token %}
+            
+            <div class="mb-4">
+                {{ form.as_p }}
+            </div>
+
+            <button type="submit" class="w-full bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg transition duration-200">
+                Update Reminder
+            </button>
+        </form>
+
+        <div class="mt-6 text-center">
+            <a href="{% url 'email_status' %}" class="text-blue-500 hover:underline">
+                Back to Status
+            </a>
+        </div>
+    </div>
+
+</body>
+</html>
