@@ -16,7 +16,7 @@ def send_scheduled_email(recipient_email, message, schedule_id):
         send_mail(
            subject='Scheduled Reminder',  # Subject of the email
             message=message,               # Body of the email
-            from_email=settings.EMAIL_HOST_USER,  # Sender's email address
+            from_email = settings.EMAIL_HOST_USER,  # Sender's email address
             recipient_list=[recipient_email],     # Recipient email
             fail_silently=False,    # Raise exceptions if any errors
         )
